@@ -3,7 +3,7 @@ pragma solidity >=0.4.24 <=0.5.6;
 
 contract NFTContract {
     string public name = "xiubin"; 
-    string public symbol = "KL"; //토큰 단위
+    string public symbol = "XB"; //토큰 단위
     
     mapping (uint256 => address) public tokenOwner;
     mapping (uint256 => string) public tokenURIs;
