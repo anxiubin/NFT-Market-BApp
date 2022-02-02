@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react"
-import { getBalance, fetchCardsOf } from "../../api/UseCaver"
+import { fetchCardsOf } from "../../api/UseCaver"
 import * as KlipAPI from "../../api/UseKlip"
 import { Card, Row, Col } from "react-bootstrap"
 import { MARKET_CONTRACT_ADDRESS } from "../../config"
 import { DEFAULT_QR_CODE } from "../../constants"
+import QRcode from "../../components/QRcode"
+import Modal from "../../components/Modal"
 
 export default function Market() {
 	const [nfts, setNfts] = useState([]) // {id: '101', uri: ''}
-	const [myBalance, setMyBalance] = useState("0")
-	const [myAddress, setMyAddress] = useState("0x00000000000000000000000000000")
 
 	const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE)
 	const [showModal, setShowModal] = useState(false)
@@ -38,22 +38,7 @@ export default function Market() {
 		setShowModal(true)
 	}
 
-	const getUserData = () => {
-		setModalProps({
-			title: "Klip 지갑을 연동하시겠습니까?",
-			onConfirm: () => {
-				KlipAPI.getAddress(setQrvalue, async (address) => {
-					setMyAddress(address)
-					const _balance = await getBalance(address)
-					setMyBalance(_balance)
-				})
-			},
-		})
-		setShowModal(true)
-	}
-
 	useEffect(() => {
-		getUserData()
 		fetchMarketNFTs()
 	}, [])
 
@@ -62,6 +47,8 @@ export default function Market() {
 			className="container"
 			style={{ padding: "0 10px 50px", width: "100%" }}
 		>
+			{qrvalue !== "DEFAULT" ? <QRcode value={qrvalue} /> : null}
+
 			<Row>
 				{nfts.map((nft) => (
 					<Col style={{ marginRight: 0, paddingRight: 0 }} sm={4} xs={6}>
@@ -76,6 +63,11 @@ export default function Market() {
 					</Col>
 				))}
 			</Row>
+			<Modal
+				showModal={showModal}
+				close={() => setShowModal(false)}
+				modalProps={modalProps}
+			/>
 		</div>
 	)
 }

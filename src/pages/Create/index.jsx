@@ -7,7 +7,7 @@ import * as KasAPI from "../../api/UseKAS"
 import { DEFAULT_QR_CODE, DEFAULT_ADDRESS } from "../../constants"
 
 export default function Create() {
-	let myAddress = ""
+	const myAddress = window.sessionStorage.getItem('address') || DEFAULT_ADDRESS
 
 	const containerRef = useRef(null)
 	const [mintImageUrl, setMintImageUrl] = useState("")
@@ -16,39 +16,47 @@ export default function Create() {
 	const [mintTokenId, setMintTokenId] = useState("")
 	const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE)
 	const [isLoading, setLoading] = useState(false)
-	const [show, setShow] = useState(false)
+	const [show, setShowModal] = useState(false)
 
-	const handleClickCloseModal = () => setShow(false)
+	const handleClickCloseModal = () => setShowModal(false)
 
-	const onClickMint = () => async (uri, tokenID) => {
-		if (myAddress === DEFAULT_ADDRESS) {
-			alert("NO ADDRESS")
-			return
-		}
-		setLoading(true)
-
-		//이미 발행된 토큰값인지 구별한 후 넣는 알고리즘 추가 필요
-		// const randomTokenId = parseInt(Math.random() * 10000000)
-
-		// metadata upload
-		const metadataURL = await KasAPI.uploadMetaData(mintName, mintDescription,uri)
-		if(!metadataURL) {
-			alert('메타데이터 업로드에 실패했습니다.')
-			return
-		} 
-
-		await KlipAPI.mintCardWithURI(
-			myAddress,
-			tokenID, // randomTokenId 대체
-			metadataURL,
-			setQrvalue,
-			(result) => {
-				console.log(JSON.stringify(result))
-				setMintImageUrl("")
-				setLoading(false)
-				setShow(true)
+	const onClickMint = async () => {
+		try {
+			if (myAddress === DEFAULT_ADDRESS) {
+				alert("NO ADDRESS")
+				return
 			}
-		)
+			setLoading(true)
+	
+			//이미 발행된 토큰값인지 구별한 후 넣는 알고리즘 추가 필요
+			// const randomTokenId = parseInt(Math.random() * 10000000)
+	
+			// metadata upload
+			const metadataURL = await KasAPI.uploadMetaData(mintName, mintDescription, mintImageUrl)
+			if(!metadataURL) {
+				alert('메타데이터 업로드에 실패했습니다.')
+				return
+			} 
+	
+			await KlipAPI.mintCardWithURI(
+				myAddress,
+				mintTokenId, // randomTokenId 대체
+				metadataURL,
+				setQrvalue,
+				(result) => {
+					console.log(JSON.stringify(result))
+					setMintImageUrl("")
+					setMintName("")
+					setMintDescription("")
+					setMintTokenId("")
+					setLoading(false)
+					setShowModal(true)
+				}
+			)
+		} catch (error) {
+			console.log(error)
+			setLoading(false)
+		}
 	}
 
 	return (
@@ -109,7 +117,7 @@ export default function Create() {
 						<Button
 							variant="primary"
 							disabled={isLoading}
-							onClick={!isLoading ? onClickMint(mintImageUrl, mintTokenId) : null}
+							onClick={!isLoading ? onClickMint : null}
 						>
 							{isLoading ? "발행하는 중..." : "발행하기"}
 						</Button>

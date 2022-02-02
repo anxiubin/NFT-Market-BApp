@@ -4,14 +4,13 @@ import Modal from "../../components/Modal"
 import QRcode from "../../components/QRcode"
 import { getBalance, fetchCardsOf } from "../../api/UseCaver"
 import * as KlipAPI from "../../api/UseKlip"
-import { MARKET_CONTRACT_ADDRESS } from "../../config"
 import { DEFAULT_QR_CODE, DEFAULT_ADDRESS } from "../../constants"
 import LogoKlaytn from "../../assets/logo_klaytn.png"
 
 export default function Wallet() {
 	const [nfts, setNfts] = useState([]) // {id: '101', uri: ''}
-	const [myBalance, setMyBalance] = useState("0")
-	const [myAddress, setMyAddress] = useState("0x00000000000000000000000000000")
+	const [myAddress, setMyAddress] = useState(window.sessionStorage.getItem('address') || DEFAULT_ADDRESS)
+	const [myBalance, setMyBalance] = useState(window.sessionStorage.getItem('balance') || '0')
 
 	const [qrvalue, setQrvalue] = useState(DEFAULT_QR_CODE)
 	const [showModal, setShowModal] = useState(false)
@@ -51,9 +50,12 @@ export default function Wallet() {
 			title: "Klip 지갑을 연동하시겠습니까?",
 			onConfirm: () => {
 				KlipAPI.getAddress(setQrvalue, async (address) => {
+					window.sessionStorage.setItem('address', address);
 					setMyAddress(address)
 					const _balance = await getBalance(address)
+					window.sessionStorage.setItem('balance', _balance);
 					setMyBalance(_balance)
+
 				})
 			},
 		})
