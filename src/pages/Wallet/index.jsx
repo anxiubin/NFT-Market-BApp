@@ -29,7 +29,7 @@ export default function Wallet() {
 
 	const onClickCard = (id) => {
 		setModalProps({
-			title: "NFT를 구매하시겠어요?",
+			title: "NFT를 마켓에 올리시겠어요?",
 			onConfirm: () => {
 				onClickMyCard(id)
 			},
@@ -65,9 +65,10 @@ export default function Wallet() {
 	}
 
 	useEffect(() => {
-		// getUserData()
-		// fetchMyNFTs()
-	}, [])
+		if (myAddress !== DEFAULT_ADDRESS) {
+			fetchMyNFTs()
+		}
+	}, [myAddress])
 
 	return (
 		<div
