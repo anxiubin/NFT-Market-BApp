@@ -22,6 +22,7 @@ const getKlipAccessUrl = (method, request_key) => {
   }
   return `kakaotalk://klipwallet/open?url=https://klipwallet.com/?target=/a2a?request_key=${request_key}`;
 };
+
 export const buyCard = async (tokenId, setQrvalue, callback) => {
   const functionJson =
     '{ "constant": false, "inputs": [ { "name": "tokenId", "type": "uint256" }, { "name": "NFTAddress", "type": "address" } ], "name": "buyNFT", "outputs": [ { "name": "", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }';
@@ -151,50 +152,3 @@ export const getAddress = (setQrvalue, callback) => {
       }, 1000);
     });
 };
-
-
-/*
-
-export const bookRoom = (hostId, index, date, setQrvalue) => {
-	axios
-		.post(A2P_API_PREPARE_URL, {
-			bapp: {
-				name: APP_NAME,
-			},
-			type: "execute_contract",
-			transaction: {
-				to: AIRDND_CONTRACT_ADDRESS, //실행할 스마트컨트랙트 주소
-				abi: BOOKING_ROOM_ABI, //실행할 컨트랙트 함수 정보의 ABI (문자열로 삽입)
-				value: "0", //해당 컨트랙트에 전송할 KLAY (단위는 PEB, 문자열로 삽입)
-				//참고: https://forum.klaytn.com/t/kas-api-case-5-execute-contract/528
-				params: `[\"${hostId}\",\"${index}\",\"${date}\"]`, //해당 함수에 넘겨줄 인자값 (해당 함수를 실행한 인자를 배열 형태의 문자열을 설정)
-			},
-		})
-		.then((response) => {
-			const { request_key } = response.data //Reqeust Key 발급 성공
-			const qrcode = `https://klipwallet.com/?target=/a2a?request_key=${request_key}`
-			setQrvalue(qrcode) //Klip에 인증 또는 서명을 요청하기 위해 QR code 방식 사용
-
-			// 결과값 가져오기
-			let timerId = setInterval(() => {
-				axios
-					.get(
-						`https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${request_key}`
-					)
-					.then((res) => {
-						if (res.data.result) {
-							console.log(
-								`[bookRoom Result] ${JSON.stringify(res.data.result)}`
-							)
-							if (res.data.result.status === "success") {
-								clearInterval(timerId)
-							} else if (res.data.result.status === "fail") {
-								clearInterval(timerId)
-								console.log("failed!!!!")
-							}
-						}
-					})
-			}, 1000)
-		})
-}
-*/
