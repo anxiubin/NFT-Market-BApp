@@ -4,6 +4,12 @@ LikeLion NFT Market BApp Project
 
 <br />
 
+## Demo video
+
+<video src="/demo.gif" autoplay width="800px" height="712px"></video>
+
+<br />
+
 ## 🎉 Get Started
 #### 1. src 폴더에 `config` 폴더 생성 후 config.cypress.js 파일 생성
 메인넷 네트워크 연결 후 진행
