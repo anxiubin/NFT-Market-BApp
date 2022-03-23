@@ -6,7 +6,7 @@ LikeLion NFT Market BApp Project
 
 ## Demo video
 
-<iframe title="'NFT market BApp demo" width="640" height="360" src="https://play-tv.kakao.com/embed/player/cliplink/427309495?service=player_share" allowfullscreen frameborder="0" scrolling="no" allow="autoplay; fullscreen; encrypted-media"></iframe>
+[video link]("https://play-tv.kakao.com/embed/player/cliplink/427309495?service=player_share")
 
 <br />
 
