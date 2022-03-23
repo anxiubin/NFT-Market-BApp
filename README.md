@@ -13,7 +13,6 @@ export const NFT_CONTRACT_ADDRESS = "" // modifiedKIP17Token 컨트랙트 배포
 export const MARKET_CONTRACT_ADDRESS = "" // NFTMarket 컨트랙트 배포 주소
 export const ACCESS_KEY_ID = "" // KAS API ACCESS_KEY_ID
 export const SECRET_ACCESS_KEY = "" // KAS API SECRET_ACCESS_KEY
-export const DEPLOY_ADDRESS_PRIVATE_KEY = "" // 컨트랙트 배포 지갑 private key
 export const CHAIN_ID = "8217" 
 ```
 #### 2. NODE 모듈 설치
